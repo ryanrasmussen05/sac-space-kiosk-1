@@ -1,4 +1,5 @@
 let splashScreen, mainMenu;
+let resetTimeout;
 
 const Videos = [
   { title: 'Humans Explore Farther - Go Forward', image: 'explore-farther.png', video: 'exploring_farther.mp4'},
@@ -51,6 +52,18 @@ const addVideosToMainMenu = () => {
   });
 };
 
+const handleReset = () => {
+  goToSplashScreen();
+  resetTimeout = null;
+};
+
+const cancelReset = () => {
+  if (resetTimeout) {
+    clearTimeout(resetTimeout);
+    resetTimeout = null;
+  }
+};
+
 const goToSplashScreen = () => {
   splashScreen.style.display = 'flex';
   mainMenu.style.display = 'none';
@@ -59,4 +72,6 @@ const goToSplashScreen = () => {
 const goToMainMenu = () => {
   splashScreen.style.display = 'none';
   mainMenu.style.display = 'flex';
+
+  resetTimeout = setTimeout(handleReset, 60000);
 };
