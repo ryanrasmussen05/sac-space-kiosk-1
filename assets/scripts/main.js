@@ -1,4 +1,4 @@
-let splashScreen, mainMenu;
+let splashScreen, mainMenu, videoPage, videoTitle, backButton, videoPlayer;
 let resetTimeout;
 
 const Videos = [
@@ -18,12 +18,18 @@ const Videos = [
 const startup = () => {
   splashScreen = document.getElementById('splash-screen');
   mainMenu = document.getElementById('main-menu');
+  videoPage = document.getElementById('video-page');
+  videoTitle = document.getElementById('video-title');
+  backButton = document.getElementById('back-button');
+  videoPlayer = document.getElementById('video-player');
 
   goToSplashScreen();
   addVideosToMainMenu();
 
   // add touch events
-  document.getElementById('splash-screen').addEventListener('click', goToMainMenu);
+  splashScreen.addEventListener('click', goToMainMenu);
+  backButton.addEventListener('click', goToMainMenu);
+  videoPlayer.onended = goToMainMenu;
 
   // prevent context menu from appearing
   // window.addEventListener("contextmenu", function(e) { e.preventDefault(); });
@@ -36,6 +42,7 @@ const addVideosToMainMenu = () => {
 
     let videoContainerNode = document.createElement('div');
     videoContainerNode.className = 'video-container';
+    videoContainerNode.addEventListener('click', () => goToVideoPage(video));
 
     let imageNode = document.createElement('div');
     imageNode.className = 'video-image';
@@ -67,11 +74,28 @@ const cancelReset = () => {
 const goToSplashScreen = () => {
   splashScreen.style.display = 'flex';
   mainMenu.style.display = 'none';
+  videoPage.style.display = 'none';
 };
 
 const goToMainMenu = () => {
   splashScreen.style.display = 'none';
   mainMenu.style.display = 'flex';
+  videoPage.style.display = 'none';
+
+  videoPlayer.pause();
 
   resetTimeout = setTimeout(handleReset, 60000);
+};
+
+const goToVideoPage = video => {
+  splashScreen.style.display = 'none';
+  mainMenu.style.display = 'none';
+  videoPage.style.display = 'flex';
+
+  cancelReset();
+
+  videoTitle.innerText = video.title;
+  videoPlayer.src = `assets/videos/${video.video}`;
+  videoPlayer.volume = 1.0;
+  videoPlayer.play();
 };
