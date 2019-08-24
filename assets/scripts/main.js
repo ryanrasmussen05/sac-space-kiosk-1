@@ -32,7 +32,7 @@ const startup = () => {
   videoPlayer.onended = goToMainMenu;
 
   // prevent context menu from appearing
-  // window.addEventListener("contextmenu", function(e) { e.preventDefault(); });
+  window.addEventListener("contextmenu", function(e) { e.preventDefault(); });
 };
 
 const addVideosToMainMenu = () => {
