@@ -1,5 +1,4 @@
-let splashScreen, mainMenu, videoPage, videoTitle, backButton, videoPlayer;
-let resetTimeout;
+let mainMenu, videoPage, videoTitle, backButton, videoPlayer;
 
 const Videos = [
   { title: 'Humans Explore Farther - Go Forward', image: 'explore-farther.png', video: 'exploring_farther.mp4'},
@@ -12,22 +11,21 @@ const Videos = [
   { title: 'MAVEN Comet Mission', image: 'maven-comet.png', video: 'maven-comet.mov'},
   { title: 'MAVEN Statistics', image: 'maven-statistics.png', video: 'maven-statistics.mov'},
   { title: 'Happy Birthday to the Mars Curiosity Rover', image: 'happy-birthday.png', video: 'happy-birthday.mov'},
-  { title: 'Sample Analysis of Mars (SAM) on board Curiosity', image: 'sam.png', video: 'sam.mov'}
+  { title: 'Sample Analysis of Mars (SAM) on board Curiosity', image: 'sam.png', video: 'sam.mov'},
+  { title: 'The Helical Model - Our Solar System is a Vortex', image: 'solar-system.png', video: 'solar-system.mp4'}
 ];
 
 const startup = () => {
-  splashScreen = document.getElementById('splash-screen');
   mainMenu = document.getElementById('main-menu');
   videoPage = document.getElementById('video-page');
   videoTitle = document.getElementById('video-title');
   backButton = document.getElementById('back-button');
   videoPlayer = document.getElementById('video-player');
 
-  goToSplashScreen();
+  goToMainMenu();
   addVideosToMainMenu();
 
   // add touch events
-  splashScreen.addEventListener('click', goToMainMenu);
   backButton.addEventListener('click', goToMainMenu);
   videoPlayer.onended = goToMainMenu;
 
@@ -59,40 +57,16 @@ const addVideosToMainMenu = () => {
   });
 };
 
-const handleReset = () => {
-  goToSplashScreen();
-  resetTimeout = null;
-};
-
-const cancelReset = () => {
-  if (resetTimeout) {
-    clearTimeout(resetTimeout);
-    resetTimeout = null;
-  }
-};
-
-const goToSplashScreen = () => {
-  splashScreen.style.display = 'flex';
-  mainMenu.style.display = 'none';
-  videoPage.style.display = 'none';
-};
-
 const goToMainMenu = () => {
-  splashScreen.style.display = 'none';
   mainMenu.style.display = 'flex';
   videoPage.style.display = 'none';
 
   videoPlayer.pause();
-
-  resetTimeout = setTimeout(handleReset, 60000);
 };
 
 const goToVideoPage = video => {
-  splashScreen.style.display = 'none';
   mainMenu.style.display = 'none';
   videoPage.style.display = 'flex';
-
-  cancelReset();
 
   videoTitle.innerText = video.title;
   videoPlayer.src = `assets/videos/${video.video}`;
